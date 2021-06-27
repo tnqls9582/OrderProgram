@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="mm"> 
+ 	<!-- 구매자 회원가입 -->
+ 	<insert id="bmemberjoin" parameterType="memberdto">
+ 		INSERT INTO BUYMEMBER(BRNUMBER,BID,BPASSWORD,BNAME,BPHONE,BADDRESS) 
+ 		VALUES(#{brnumber},#{bid},#{bpassword},#{bname},#{bphone},#{baddress})
+ 	</insert>
+ 
+ 	<!-- 판매자 회원가입 -->
+ 	<insert id="smemberjoin" parameterType="memberdto">
+ 		INSERT INTO SELMEMBER(SRNUMBER,SID,SPASSWORD,SNAME,SPHONE,SADDRESS) 
+ 		VALUES(#{srnumber},#{sid},#{spassword},#{sname},#{sphone},#{saddress})
+ 	</insert>
+ 	
+ 	<!-- 구매자 아이디 중복확인 -->
+ 	<select id="bidcheck" parameterType="String" resultType="String">
+ 		SELECT BID FROM BUYMEMBER WHERE BID=#{bid} AND BPASSWORD=#{bpassword}
+ 	</select>
+ 	
+ 	<!-- 판매자 아이디 중복확인 -->
+ 	<select id="sidcheck" parameterType="String" resultType="String">
+ 		SELECT SID FROM SELMEMBER WHERE SID=#{sid} AND SPASSWORD=#{spassword}
+ 	</select>
+ 	
+ 	<!-- 구매자 로그인 -->
+ 	<select id="bmemberlogin" parameterType="memberdto" resultType="String">
+ 		SELECT BID FROM BUYMEMBER WHERE BID=#{id} AND BPASSWORD=#{pw}
+ 	</select>
+ 	
+ 	<!-- 판매자 로그인 -->
+ 	<select id="smemberlogin" parameterType="memberdto" resultType="String">
+ 		SELECT SID FROM SELMEMBER WHERE SID=#{id} AND SPASSWORD=#{pw}
+ 	</select>
+ 	
+ 	<!-- 구매자 회원정보 수정 요청 -->
+ 	<select id="bmemberupdate" parameterType="String" resultType="memberdto">
+ 		SELECT * FROM BUYMEMBER WHERE BID=#{loginId}
+ 	</select>
+ 	
+ 	<!-- 구매자 회원정보 수정 처리 -->
+ 	<update id="bupdateprocess" parameterType="memberdto">
+ 		UPDATE BUYMEMBER SET BNAME=#{bname}, BPHONE=#{bphone}, BADDRESS=#{baddress} WHERE BRNUMBER=#{brnumber} 
+ 	</update>
+ 	
+ 	<!-- 판매자 회원정보 수정 요청 -->
+ 	<select id="smemberupdate" parameterType="String" resultType="memberdto">
+ 		SELECT * FROM SELMEMBER WHERE SID=#{loginId}
+ 	</select>
+ 	
+ 	<!-- 판매자 회원정보 수정 처리 -->
+ 	<update id="supdateprocess" parameterType="memberdto">
+ 		UPDATE SELMEMBER SET SNAME=#{sname}, SPHONE=#{sphone}, SADDRESS=#{saddress} WHERE SRNUMBER=#{srnumber} 
+ 	</update>
+ </mapper>
+ 
+ 

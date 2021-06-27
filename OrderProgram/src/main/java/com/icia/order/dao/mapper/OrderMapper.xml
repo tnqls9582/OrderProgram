@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="om"> 
+ 	<!-- 장바구니  -->
+ 	<insert id="basket" parameterType="orderdto">
+ 		INSERT INTO JBASKET(JBRNUMBER,JPCODE,JAMOUNT)
+ 		 VALUES((SELECT BRNUMBER FROM BUYMEMBER WHERE BID=#{bid}),#{jpcode},#{jamount})
+ 	</insert>
+ 	
+ 	<!-- 장바구니 리스트 -->
+ 	<select id="basketlist" resultType="orderdto">
+	SELECT
+ 		PRODUCT.PNAME AS PNAME,
+ 		SELMEMBER.SNAME AS SNAME,
+ 		PRODUCT.PPRICE AS PRICE,
+ 		PRODUCT.PEXDATE AS EXDATE,
+		JBASKET.JAMOUNT AS AMOUNT
+    		FROM SYS.JBASKET INNER JOIN SYS.PRODUCT ON PRODUCT.PCODE = JBASKET.JPCODE
+                 INNER JOIN SYS.SELMEMBER ON PRODUCT.PSRNUMBER = SELMEMBER.SRNUMBER
+                 INNER JOIN SYS.BUYMEMBER ON BUYMEMBER.BRNUMBER = JBASKET.JBRNUMBER
+                 WHERE BUYMEMBER.BID = #{bid }
+ 	</select>
+ </mapper>
+ 
+ 
